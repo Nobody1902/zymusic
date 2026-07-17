@@ -1,0 +1,18 @@
+[project]
+name = "zymusic"
+version = "0.1.0"
+description = "A music application"
+requires-python = ">=3.12"
+dependencies = [
+    "flet",
+    "flet-cli",
+    "flet-desktop",
+    "ytmusicapi",
+]
+
+[project.scripts]
+zymusic = "zymusic:main"
+
+[build-system]
+requires = ["uv_build>=0.11.0,<0.12.0"]
+build-backend = "uv_build"
