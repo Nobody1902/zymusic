@@ -4,9 +4,9 @@ version = "0.1.0"
 description = "A music application"
 requires-python = ">=3.12"
 dependencies = [
-    "flet",
-    "flet-cli",
-    "flet-desktop",
+    "flet==0.80.0",
+    "flet-cli==0.80.0",
+    "flet-desktop==0.80.0",
     "ytmusicapi",
 ]
 

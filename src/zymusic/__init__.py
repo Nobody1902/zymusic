@@ -1,1 +1,1 @@
-from zymusic.__main__ import main
+from zymusic.main import main

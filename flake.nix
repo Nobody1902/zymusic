@@ -87,8 +87,10 @@
             packages = [
               virtualenv
               pkgs.uv
+              pkgs.mpv
             ];
             env = {
+              FLET_VIEW_PATH = "${pkgs.flet-client-flutter}/bin";
               UV_NO_SYNC = "1";
               UV_PYTHON = pythonSet.python.interpreter;
               UV_PYTHON_DOWNLOADS = "never";
