@@ -20,8 +20,4 @@ class HomeView(ft.Column):
 
         self.controls = [
             ft.Text("Home"),
-            ft.TextButton(
-                "Play",
-                on_click=lambda: self._player.play_search_result("my body isn't ready"),
-            ),
         ]
