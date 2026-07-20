@@ -12,7 +12,7 @@ class Sidebar(ft.NavigationRail):
         self.min_extended_width = 200
         self.label_type = ft.NavigationRailLabelType.SELECTED
         self.group_alignment = 0.0
-        self.selected_index = 1
+        self.selected_index = 0
         self.leading = ft.IconButton(ft.Icons.ACCOUNT_CIRCLE)
         self.destinations = [
             ft.NavigationRailDestination(

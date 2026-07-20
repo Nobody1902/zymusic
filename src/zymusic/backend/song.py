@@ -68,9 +68,27 @@ class Song:
         )
 
     @classmethod
+    def from_home_item(cls, item: dict) -> "Song":
+        artists = item.get("artists") or []
+        thumbnails = item.get("thumbnails") or []
+        album = item.get("album")
+        if isinstance(album, dict):
+            album = album.get("name")
+        return cls(
+            title=item.get("title", ""),
+            artist=artists[0].get("name", "Unknown") if artists else "Unknown",
+            video_id=item.get("videoId", ""),
+            album=album,
+            duration=item.get("duration_seconds"),
+            thumbnail=thumbnails[-1].get("url") if thumbnails else None,
+            artist_id=artists[0].get("id") if artists else None,
+            is_explicit=item.get("isExplicit", False),
+        )
+
+    @classmethod
     def from_watch_track(cls, track: dict) -> "Song":
         artists = track.get("artists") or []
-        thumbnails = track.get("thumbnail") or []
+        thumbnails = track.get("thumbnails") or []
         return cls(
             title=track.get("title", ""),
             artist=artists[0].get("name", "Unknown") if artists else "Unknown",

@@ -28,7 +28,6 @@ class MediaPlayer:
 
         self._on_track_change = []
         self._on_playback_state = []
-        self._on_queue_change = []
         self._on_position_change = []
         self._on_shuffle_change = []
         self._on_repeat_change = []
@@ -211,8 +210,13 @@ class MediaPlayer:
         return song
 
     def play_song(self, song):
-        self._queue.append(song)
-        self.play_index(len(self._queue) - 1)
+        assert song
+
+        if song not in self._queue:
+            self._queue.append(song)
+            self.play_index(len(self._queue) - 1)
+        else:
+            self.play_index(self._queue.items.index(song))
 
     def play_search_result(self, results, index=0):
         if not results or index >= len(results):
@@ -251,25 +255,20 @@ class MediaPlayer:
 
     def add_to_queue(self, song):
         self._queue.append(song)
-        self._emit_queue_change()
 
     def add_next(self, song):
         self._queue.insert_next(song)
-        self._emit_queue_change()
 
     def remove_from_queue(self, index):
         removed = self._queue.remove(index)
-        self._emit_queue_change()
         return removed
 
     def move_in_queue(self, from_index, to_index):
         self._queue.move(from_index, to_index)
-        self._emit_queue_change()
 
     def clear_queue(self):
         self._queue.clear()
         self.stop()
-        self._emit_queue_change()
 
     # ── Search & browse ───────────────────────────────────────
 
@@ -499,9 +498,6 @@ class MediaPlayer:
     def on_playback_state_change(self, callback):
         self._on_playback_state.append(callback)
 
-    def on_queue_change(self, callback):
-        self._on_queue_change.append(callback)
-
     def on_position_change(self, callback):
         self._on_position_change.append(callback)
 
@@ -528,10 +524,6 @@ class MediaPlayer:
     def _emit_track_change(self, song):
         for cb in self._on_track_change:
             cb(song)
-
-    def _emit_queue_change(self):
-        for cb in self._on_queue_change:
-            cb()
 
     def _emit_playback_state(self, state):
         for cb in self._on_playback_state:

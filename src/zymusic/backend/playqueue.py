@@ -5,6 +5,14 @@ class Queue:
     def __init__(self):
         self._items: list = []
         self._current_index: int = -1
+        self._on_change = []
+
+    def on_change(self, callback):
+        self._on_change.append(callback)
+
+    def _emit_change(self):
+        for cb in self._on_change:
+            cb()
 
     @property
     def current(self):
@@ -28,6 +36,7 @@ class Queue:
         self._items.append(song)
         if self._current_index == -1:
             self._current_index = 0
+        self._emit_change()
 
     def extend(self, songs):
         if not songs:
@@ -35,21 +44,25 @@ class Queue:
         self._items.extend(songs)
         if self._current_index == -1:
             self._current_index = 0
+        self._emit_change()
 
     def insert_next(self, song):
         insert_at = self._current_index + 1 if self._current_index >= 0 else 0
         self._items.insert(insert_at, song)
+        self._emit_change()
 
     def insert_at(self, index, song):
         self._items.insert(index, song)
         if index <= self._current_index:
             self._current_index += 1
+        self._emit_change()
 
     def remove(self, index):
         if 0 <= index < len(self._items):
             removed = self._items.pop(index)
             if index <= self._current_index:
                 self._current_index = max(-1, self._current_index - 1)
+            self._emit_change()
             return removed
         return None
 
@@ -64,11 +77,13 @@ class Queue:
             self._current_index -= 1
         elif to_index <= self._current_index < from_index:
             self._current_index += 1
+        self._emit_change()
         return True
 
     def clear(self):
         self._items.clear()
         self._current_index = -1
+        self._emit_change()
 
     def next(self):
         if self._current_index + 1 < len(self._items):
@@ -99,6 +114,7 @@ class Queue:
             self._current_index = 0
         else:
             self._items = rest
+        self._emit_change()
 
     def reorder(self, new_order):
         if len(new_order) != len(self._items):
@@ -110,6 +126,7 @@ class Queue:
                 if id(item) == current_id:
                     self._current_index = i
                     break
+        self._emit_change()
 
     def __len__(self):
         return len(self._items)

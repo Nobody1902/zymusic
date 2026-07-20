@@ -41,8 +41,8 @@ class BottomBar(ft.BottomAppBar):
     def _on_position_change(self, pos, duration):
         self.progress_slider.max = duration
         self.progress_slider.value = pos
-        self.current_time.content.value = self._format_time(pos)
-        self.duration_time.content.value = self._format_time(duration)
+        self.current_time.content.value = self._format_time(pos)  # pyright: ignore[reportOptionalMemberAccess,reportAttributeAccessIssue]
+        self.duration_time.content.value = self._format_time(duration)  # pyright: ignore[reportOptionalMemberAccess,reportAttributeAccessIssue]
         self.update()
 
     def _on_playback_state_change(self, playing):
@@ -235,7 +235,7 @@ class BottomBar(ft.BottomAppBar):
                                 self.pause_button,
                                 self.next_button,
                                 self.repeat_button,
-                            ]
+                            ],
                         ),
                         ft.Row(
                             expand=True,
